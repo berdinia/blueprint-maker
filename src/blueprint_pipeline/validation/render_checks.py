@@ -502,7 +502,7 @@ def check_png(data: bytes, scene: Scene, *, dpi: int, svg_sha256: str) -> list[C
     ys, xs = np.nonzero(region_ink)
     bx0, bx1 = xs.min() + rx0, xs.max() + rx0
     by0, by1 = ys.min() + ry0, ys.max() + ry0
-    ok_bbox = (
+    ok_bbox = bool(
         abs(bx0 - g.x0 * k) <= tol
         and abs(bx1 - g.x1 * k) <= tol
         and abs(by0 - g.y0 * k) <= tol
@@ -547,7 +547,7 @@ def check_png(data: bytes, scene: Scene, *, dpi: int, svg_sha256: str) -> list[C
     min_px = 50
     cl.add(
         "minimum_visible_geometry",
-        (bx1 - bx0) >= min_px or (by1 - by0) >= min_px,
+        bool((bx1 - bx0) >= min_px or (by1 - by0) >= min_px),
         f"visible geometry {bx1 - bx0}x{by1 - by0} px (min {min_px})",
     )
     return cl.items

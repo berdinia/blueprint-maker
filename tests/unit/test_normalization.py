@@ -28,7 +28,7 @@ def test_metadata_stripped_orientation_applied_and_size_limited(tmp_path):
 def test_transparency_flattened_and_dhash_stable(tmp_path):
     p = tmp_path / "a.png"
     Image.new("RGBA", (64, 64), (0, 0, 0, 0)).save(p)
-    data, rec = normalize_image(p, max_px=2048, max_bytes=10_000_000)
+    data, _rec = normalize_image(p, max_px=2048, max_bytes=10_000_000)
     assert Image.open(io.BytesIO(data)).getpixel((5, 5)) == (255, 255, 255)
     a = Image.new("L", (90, 80), 255)
     a.paste(0, (10, 10, 40, 70))
