@@ -1,0 +1,128 @@
+{
+  "decisions": [
+    {
+      "candidate_id": "ID-ALPHA",
+      "confirmed_by": "synthetic-fixture",
+      "decision_id": "DEC-001",
+      "placement_state": "ANCHORED",
+      "polygon_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "rationale": "dimensions from SYN-SRC-001",
+      "type": "PLACE_ROOM"
+    },
+    {
+      "candidate_id": "ID-BRAVO",
+      "confirmed_by": "synthetic-fixture",
+      "decision_id": "DEC-002",
+      "placement_state": "ANCHORED",
+      "polygon_mm": [
+        [
+          4000,
+          0
+        ],
+        [
+          7000,
+          0
+        ],
+        [
+          7000,
+          3000
+        ],
+        [
+          4000,
+          3000
+        ]
+      ],
+      "rationale": "corroborated by SYN-SRC-004",
+      "type": "PLACE_ROOM"
+    },
+    {
+      "candidate_id": "ID-CHARLIE",
+      "confirmed_by": "synthetic-fixture",
+      "decision_id": "DEC-003",
+      "placement_state": "LIKELY",
+      "polygon_mm": [
+        [
+          0,
+          3000
+        ],
+        [
+          5000,
+          3000
+        ],
+        [
+          5000,
+          5500
+        ],
+        [
+          0,
+          5500
+        ]
+      ],
+      "rationale": "placed from SYN-SRC-001; revision conflict left open on purpose",
+      "type": "PLACE_ROOM"
+    },
+    {
+      "confirmed_by": "synthetic-fixture",
+      "decision_id": "DEC-004",
+      "kind": "door",
+      "observation_ids": [
+        "SYN-SRC-001/OBS-0009"
+      ],
+      "offset_mm": 1000,
+      "opening_id": "OPEN-DOOR-1",
+      "placement_state": "ANCHORED",
+      "rationale": "door symbol on shared wall",
+      "room_candidates": [
+        "ID-ALPHA",
+        "ID-BRAVO"
+      ],
+      "type": "PLACE_OPENING",
+      "width_mm": 900
+    },
+    {
+      "decision_id": "DEC-005",
+      "display_name": "ANNEX?",
+      "polygon_mm": [
+        [
+          7000,
+          0
+        ],
+        [
+          8500,
+          0
+        ],
+        [
+          8500,
+          1500
+        ],
+        [
+          7000,
+          1500
+        ]
+      ],
+      "rationale": "synthetic hypothesis to exercise the uncertainty layer",
+      "room_id": "ROOM-HYP-ANNEX",
+      "type": "ADD_HYPOTHETICAL_ROOM"
+    }
+  ],
+  "schema": "blueprint.decisions",
+  "schema_version": "1.0.0",
+  "synthetic": true
+}

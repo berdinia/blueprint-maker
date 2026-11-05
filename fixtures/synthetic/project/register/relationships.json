@@ -1,0 +1,34 @@
+{
+  "relationships": [
+    {
+      "a": "SYN-SRC-001",
+      "asserted_by": "HUMAN",
+      "b": "SYN-SRC-004",
+      "confidence": 0.9,
+      "kind": "REDRAWN_SAME_ROOM",
+      "note": "independent redraw",
+      "subject": "BRAVO"
+    },
+    {
+      "a": "SYN-SRC-001",
+      "asserted_by": "HUMAN",
+      "b": "SYN-SRC-005",
+      "confidence": 0.6,
+      "kind": "POSSIBLE_REVISION",
+      "note": "depth differs",
+      "subject": "CHARLIE"
+    },
+    {
+      "a": "SYN-SRC-001",
+      "asserted_by": "HUMAN",
+      "b": "SYN-SRC-006",
+      "confidence": 0.7,
+      "kind": "SUPPLEMENTARY_DETAIL",
+      "note": "door detail",
+      "subject": null
+    }
+  ],
+  "schema": "blueprint.relationships",
+  "schema_version": "1.0.0",
+  "synthetic": true
+}
