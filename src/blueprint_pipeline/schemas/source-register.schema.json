@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:source-register:1.0.0",
+  "title": "Source register",
+  "description": "Operator-maintained list of evidence files. The register, not the model and not the filename, is the authority for source identity.",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "sources"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "blueprint.source-register"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "path"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Path relative to the input directory."
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Expected checksum; recorded on first inventory if null."
+          },
+          "declared_fragment_class": {
+            "enum": [
+              "WHOLE_FLOOR",
+              "ROOM",
+              "MULTI_ROOM_RELATIONSHIP",
+              "CORRIDOR_OR_TRANSITION",
+              "OPENING_DETAIL",
+              "PARTIAL_WALL_OR_CORNER",
+              "TEXT_OR_NOTES",
+              "UNKNOWN",
+              null
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

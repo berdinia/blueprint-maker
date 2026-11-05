@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:review-record:1.0.0",
+  "title": "Visual review record",
+  "description": "Stored review result. Transport, parse and schema status are separate from the review verdict, and the verdict is bound to the SHA-256 of the exact image reviewed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "reviewer",
+    "transport_status",
+    "parse_status",
+    "schema_status",
+    "review_verdict",
+    "reviewed_artifact",
+    "reviewed_artifact_sha256",
+    "issues",
+    "cycle"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blueprint.review-record"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "reviewer": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "LOCAL_MODEL",
+            "SIMULATED"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transport_status": {
+      "type": "string"
+    },
+    "parse_status": {
+      "type": "string"
+    },
+    "schema_status": {
+      "type": "string"
+    },
+    "review_verdict": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NOT_REVIEWED"
+      ]
+    },
+    "legible": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "reviewed_artifact": {
+      "type": "string"
+    },
+    "reviewed_artifact_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "description"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "legibility",
+              "clipping",
+              "collision",
+              "hierarchy",
+              "line_weight",
+              "label_placement",
+              "dimension_placement",
+              "rendering_defect"
+            ]
+          },
+          "severity": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "out_of_scope_items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "cycle": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}

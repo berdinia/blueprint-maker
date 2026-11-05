@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:legacy-house-model:0",
+  "title": "Legacy house model (scaffold v0.1)",
+  "description": "Format used by the previous scaffold. Read only by 'blueprint migrate-model'.",
+  "type": "object",
+  "required": [
+    "rooms"
+  ],
+  "properties": {
+    "rooms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "room_id"
+        ],
+        "properties": {
+          "room_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "x_min_mm": {
+            "type": "number"
+          },
+          "x_max_mm": {
+            "type": "number"
+          },
+          "y_min_mm": {
+            "type": "number"
+          },
+          "y_max_mm": {
+            "type": "number"
+          },
+          "name_conflicts": {
+            "type": "array"
+          },
+          "unresolved_conflicts": {
+            "type": "array"
+          },
+          "linear_dims_mm": {
+            "type": "object"
+          },
+          "corroborated_area_m2": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "openings": {
+      "type": "object"
+    },
+    "coordinate_system": {
+      "type": "object"
+    }
+  }
+}

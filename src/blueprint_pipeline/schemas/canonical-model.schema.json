@@ -1,0 +1,895 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:canonical-model:1.0.0",
+  "title": "Canonical evidence model",
+  "description": "The factual authority for rendering. Units are millimetres; Y axis points up. Every geometric feature is backed by sources and an explicit placement state, or is marked hypothetical.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "model_id",
+    "units",
+    "coordinate_system",
+    "rooms",
+    "walls",
+    "openings",
+    "adjacency",
+    "measurements",
+    "conflicts",
+    "revisions",
+    "decisions",
+    "unresolved_questions",
+    "fragments_unplaced",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blueprint.canonical-model"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "model_id": {
+      "type": "string"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "units": {
+      "const": "mm"
+    },
+    "coordinate_system": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "y_axis",
+        "status"
+      ],
+      "properties": {
+        "y_axis": {
+          "const": "up"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "provisional",
+            "anchored"
+          ]
+        }
+      }
+    },
+    "rooms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "room_id",
+          "display_name",
+          "polygon_mm",
+          "source_ids",
+          "evidence_origin_ids",
+          "confidence",
+          "placement_state",
+          "revision_state",
+          "human_confirmation",
+          "conflict_refs",
+          "hypothetical",
+          "raw_observation_ids"
+        ],
+        "properties": {
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "evidence_origin_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "raw_observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "placement_state": {
+            "enum": [
+              "ANCHORED",
+              "LIKELY",
+              "AMBIGUOUS",
+              "UNPLACED",
+              "DETAIL_ONLY"
+            ]
+          },
+          "revision_state": {
+            "enum": [
+              "CURRENT",
+              "POSSIBLE_REVISION",
+              "SUPERSEDED",
+              "CONFLICTING_VERSION",
+              "UNKNOWN"
+            ]
+          },
+          "human_confirmation": {
+            "enum": [
+              "UNCONFIRMED",
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          },
+          "conflict_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hypothetical": {
+            "type": "boolean"
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "room_id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name_candidates": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "identity_candidate_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "polygon_mm": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "measurement_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "walls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "wall_id",
+          "start_mm",
+          "end_mm",
+          "room_ids",
+          "source_ids",
+          "evidence_origin_ids",
+          "confidence",
+          "placement_state",
+          "revision_state",
+          "human_confirmation",
+          "conflict_refs",
+          "hypothetical",
+          "raw_observation_ids"
+        ],
+        "properties": {
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "evidence_origin_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "raw_observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "placement_state": {
+            "enum": [
+              "ANCHORED",
+              "LIKELY",
+              "AMBIGUOUS",
+              "UNPLACED",
+              "DETAIL_ONLY"
+            ]
+          },
+          "revision_state": {
+            "enum": [
+              "CURRENT",
+              "POSSIBLE_REVISION",
+              "SUPERSEDED",
+              "CONFLICTING_VERSION",
+              "UNKNOWN"
+            ]
+          },
+          "human_confirmation": {
+            "enum": [
+              "UNCONFIRMED",
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          },
+          "conflict_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hypothetical": {
+            "type": "boolean"
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "wall_id": {
+            "type": "string"
+          },
+          "start_mm": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "end_mm": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "room_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "thickness_mm": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "openings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "opening_id",
+          "kind",
+          "wall_id",
+          "offset_mm",
+          "width_mm",
+          "source_ids",
+          "evidence_origin_ids",
+          "confidence",
+          "placement_state",
+          "revision_state",
+          "human_confirmation",
+          "conflict_refs",
+          "hypothetical",
+          "raw_observation_ids"
+        ],
+        "properties": {
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "evidence_origin_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "raw_observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "placement_state": {
+            "enum": [
+              "ANCHORED",
+              "LIKELY",
+              "AMBIGUOUS",
+              "UNPLACED",
+              "DETAIL_ONLY"
+            ]
+          },
+          "revision_state": {
+            "enum": [
+              "CURRENT",
+              "POSSIBLE_REVISION",
+              "SUPERSEDED",
+              "CONFLICTING_VERSION",
+              "UNKNOWN"
+            ]
+          },
+          "human_confirmation": {
+            "enum": [
+              "UNCONFIRMED",
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          },
+          "conflict_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hypothetical": {
+            "type": "boolean"
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "opening_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "door",
+              "window",
+              "unknown"
+            ]
+          },
+          "wall_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "offset_mm": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "width_mm": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "room_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "adjacency": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "adjacency_id",
+          "room_ids",
+          "relation",
+          "source_ids",
+          "evidence_origin_ids",
+          "confidence",
+          "placement_state",
+          "revision_state",
+          "human_confirmation",
+          "conflict_refs",
+          "hypothetical",
+          "raw_observation_ids"
+        ],
+        "properties": {
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "evidence_origin_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "raw_observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "placement_state": {
+            "enum": [
+              "ANCHORED",
+              "LIKELY",
+              "AMBIGUOUS",
+              "UNPLACED",
+              "DETAIL_ONLY"
+            ]
+          },
+          "revision_state": {
+            "enum": [
+              "CURRENT",
+              "POSSIBLE_REVISION",
+              "SUPERSEDED",
+              "CONFLICTING_VERSION",
+              "UNKNOWN"
+            ]
+          },
+          "human_confirmation": {
+            "enum": [
+              "UNCONFIRMED",
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          },
+          "conflict_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hypothetical": {
+            "type": "boolean"
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "adjacency_id": {
+            "type": "string"
+          },
+          "room_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "relation": {
+            "enum": [
+              "SHARES_WALL",
+              "CONNECTED_BY_OPENING"
+            ]
+          }
+        }
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "measurement_id",
+          "subject_id",
+          "quantity",
+          "value_mm",
+          "raw_text",
+          "observation_id",
+          "source_id"
+        ],
+        "properties": {
+          "measurement_id": {
+            "type": "string"
+          },
+          "subject_id": {
+            "type": "string"
+          },
+          "quantity": {
+            "enum": [
+              "width",
+              "depth",
+              "length",
+              "height",
+              "unknown"
+            ]
+          },
+          "value_mm": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "raw_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "observation_id": {
+            "type": "string"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+          },
+          "origin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "conflict_id",
+          "kind",
+          "subject",
+          "detail",
+          "status"
+        ],
+        "properties": {
+          "conflict_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "MEASUREMENT",
+              "REVISION",
+              "IDENTITY",
+              "NAME",
+              "PLACEMENT",
+              "PROVENANCE"
+            ]
+          },
+          "subject": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "values": {
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "OPEN",
+              "RESOLVED_BY_DECISION"
+            ]
+          },
+          "resolution": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "affects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "revisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "revision_id",
+          "candidate_id",
+          "source_ids",
+          "state"
+        ],
+        "properties": {
+          "revision_id": {
+            "type": "string"
+          },
+          "candidate_id": {
+            "type": "string"
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "state": {
+            "enum": [
+              "CURRENT",
+              "POSSIBLE_REVISION",
+              "SUPERSEDED",
+              "CONFLICTING_VERSION",
+              "UNKNOWN"
+            ]
+          },
+          "decision_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "decision_id",
+          "type",
+          "applied"
+        ],
+        "properties": {
+          "decision_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "applied": {
+            "type": "boolean"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "unresolved_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "question_id",
+          "text"
+        ],
+        "properties": {
+          "question_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "fragments_unplaced": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "subject_id",
+          "kind",
+          "placement_state",
+          "reason"
+        ],
+        "properties": {
+          "subject_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "fragment_class": {
+            "enum": [
+              "WHOLE_FLOOR",
+              "ROOM",
+              "MULTI_ROOM_RELATIONSHIP",
+              "CORRIDOR_OR_TRANSITION",
+              "OPENING_DETAIL",
+              "PARTIAL_WALL_OR_CORNER",
+              "TEXT_OR_NOTES",
+              "UNKNOWN",
+              null
+            ]
+          },
+          "placement_state": {
+            "enum": [
+              "ANCHORED",
+              "LIKELY",
+              "AMBIGUOUS",
+              "UNPLACED",
+              "DETAIL_ONLY"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            }
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "inputs",
+        "builder"
+      ],
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "builder": {
+          "type": "string"
+        },
+        "migrated_from": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

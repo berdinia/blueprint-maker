@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:extraction-record:1.0.0",
+  "title": "Stored extraction record",
+  "description": "One extraction attempt as stored by the pipeline, with authoritative provenance and per-phase verdicts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "source_id",
+    "input_sha256",
+    "normalized_sha256",
+    "request_id",
+    "attempt_id",
+    "status",
+    "stage_status",
+    "provenance",
+    "model",
+    "observations",
+    "warnings"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blueprint.extraction-record"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "normalized_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "normalized_path": {
+      "type": "string"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "attempt_id": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "TRANSPORT_FAILED",
+        "HTTP_FAILED",
+        "MODEL_ABORTED",
+        "EMPTY_RESPONSE",
+        "STREAM_INCOMPLETE",
+        "PARSE_FAILED",
+        "SCHEMA_FAILED",
+        "SEMANTIC_FAILED",
+        "SUCCESS"
+      ]
+    },
+    "stage_status": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "requested": {
+          "type": "string"
+        },
+        "reported": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "api": {
+          "type": "string"
+        },
+        "fallback_used": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "requested"
+      ]
+    },
+    "prompt": {
+      "type": "object",
+      "properties": {
+        "template_id": {
+          "type": "string"
+        },
+        "template_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authoritative_source_id",
+        "model_reported_source_id",
+        "source_id_mismatch",
+        "resolved_from"
+      ],
+      "properties": {
+        "authoritative_source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "model_reported_source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id_mismatch": {
+          "type": "boolean"
+        },
+        "resolved_from": {
+          "const": "manifest"
+        }
+      }
+    },
+    "legible": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fragment": {
+      "type": "object",
+      "properties": {
+        "fragment_class": {
+          "enum": [
+            "WHOLE_FLOOR",
+            "ROOM",
+            "MULTI_ROOM_RELATIONSHIP",
+            "CORRIDOR_OR_TRANSITION",
+            "OPENING_DETAIL",
+            "PARTIAL_WALL_OR_CORNER",
+            "TEXT_OR_NOTES",
+            "UNKNOWN"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "asserted_by": {
+          "enum": [
+            "HUMAN",
+            "HEURISTIC",
+            "MODEL"
+          ]
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "observation_id",
+          "source_id",
+          "kind",
+          "raw_text",
+          "normalized",
+          "confidence"
+        ],
+        "properties": {
+          "observation_id": {
+            "type": "string"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+          },
+          "kind": {
+            "enum": [
+              "room_label",
+              "dimension",
+              "opening",
+              "wall",
+              "note",
+              "scale",
+              "other"
+            ]
+          },
+          "raw_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "normalized": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dimension_axis": {
+            "enum": [
+              "width",
+              "depth",
+              "length",
+              "height",
+              "unknown",
+              null
+            ]
+          },
+          "opening_type": {
+            "enum": [
+              "door",
+              "window",
+              "unknown",
+              null
+            ]
+          },
+          "region_hint": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value_mm": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value_uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}
