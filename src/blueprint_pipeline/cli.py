@@ -21,8 +21,23 @@ def _ctx(args: argparse.Namespace) -> Any:
     from .config.settings import load_settings
     from .orchestration.context import PipelineContext
 
-    settings = load_settings(args.config, project_root=args.project)
+    settings = load_settings(_discover_config(args), project_root=args.project)
     return PipelineContext(settings)
+
+
+def _discover_config(args: argparse.Namespace) -> str | None:
+    """--config > BLUEPRINT_CONFIG > <project>/blueprint.yaml > ./blueprint.yaml."""
+    import os
+
+    if args.config:
+        return str(args.config)
+    if os.environ.get("BLUEPRINT_CONFIG"):
+        return os.environ["BLUEPRINT_CONFIG"]
+    for base in ([Path(args.project)] if args.project else []) + [Path.cwd()]:
+        candidate = base / "blueprint.yaml"
+        if candidate.is_file():
+            return str(candidate)
+    return None
 
 
 def _print_result(res: Any, as_json: bool) -> int:

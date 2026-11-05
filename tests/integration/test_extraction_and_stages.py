@@ -180,3 +180,21 @@ def test_cli_entry_point(project):
         env={"BLUEPRINT_PROXY_ENDPOINT": "x", "PATH": ""},
     )
     assert bad.returncode == 2 and "legacy environment variable" in bad.stderr
+
+
+def test_cli_discovers_project_config(tmp_path):
+    root = tmp_path / "proj"
+    subprocess.run(
+        [sys.executable, "-m", "blueprint_pipeline.cli", "--project", str(root), "init"],
+        check=True,
+        capture_output=True,
+    )
+    cfg = (root / "blueprint.yaml").read_text().replace("extract: null", "extract: syn-x")
+    (root / "blueprint.yaml").write_text(cfg)
+    out = subprocess.run(
+        [sys.executable, "-m", "blueprint_pipeline.cli", "--project", str(root), "config"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert '"extract": "syn-x"' in out.stdout
