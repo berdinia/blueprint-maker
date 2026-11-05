@@ -10,8 +10,9 @@ listed in the previous version of this file (K1–K10) are addressed; see
   against the loopback fake server (both protocols, streaming and not, all
   failure modes). Real vision models may need prompt tuning, a larger
   `request_timeout_s`, or a smaller `max_image_px`.
-* **macOS** is covered by the CI workflow (`macos-latest`); local runs here
-  were Linux only. `fcntl.flock` semantics are the same on macOS.
+* **macOS (Apple Silicon)** was verified only through CI (`macos-latest`,
+  arm64, Python 3.10 and 3.13: all tests and the synthetic run pass), not on a
+  physical machine.
 * **Windows**: the lock falls back to exclusive file creation plus PID checks;
   untested, and a crash always needs `lock clear --stale`.
 
