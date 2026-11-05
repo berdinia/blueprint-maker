@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:decisions:1.0.0",
+  "title": "Human decisions",
+  "description": "Human-authored decisions applied when building the canonical model: placements, merges, revision acceptance and explicitly hypothetical features. Geometry enters the canonical model only through here.",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "decisions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "blueprint.decisions"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decision_id",
+              "type",
+              "candidate_id",
+              "polygon_mm",
+              "placement_state"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "confirmed_by": {
+                "type": "string"
+              },
+              "human_confirmation": {
+                "enum": [
+                  "UNCONFIRMED",
+                  "CONFIRMED",
+                  "REJECTED"
+                ]
+              },
+              "type": {
+                "const": "PLACE_ROOM"
+              },
+              "candidate_id": {
+                "type": "string"
+              },
+              "room_id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "polygon_mm": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 3
+              },
+              "placement_state": {
+                "enum": [
+                  "ANCHORED",
+                  "LIKELY",
+                  "AMBIGUOUS"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decision_id",
+              "type",
+              "candidate_ids",
+              "into"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "confirmed_by": {
+                "type": "string"
+              },
+              "human_confirmation": {
+                "enum": [
+                  "UNCONFIRMED",
+                  "CONFIRMED",
+                  "REJECTED"
+                ]
+              },
+              "type": {
+                "const": "MERGE_CANDIDATES"
+              },
+              "candidate_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 2
+              },
+              "into": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decision_id",
+              "type",
+              "candidate_id",
+              "current_source_ids"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "confirmed_by": {
+                "type": "string"
+              },
+              "human_confirmation": {
+                "enum": [
+                  "UNCONFIRMED",
+                  "CONFIRMED",
+                  "REJECTED"
+                ]
+              },
+              "type": {
+                "const": "ACCEPT_REVISION"
+              },
+              "candidate_id": {
+                "type": "string"
+              },
+              "current_source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+                },
+                "minItems": 1
+              },
+              "superseded_source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decision_id",
+              "type",
+              "opening_id",
+              "kind",
+              "room_candidates",
+              "offset_mm",
+              "width_mm"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "confirmed_by": {
+                "type": "string"
+              },
+              "human_confirmation": {
+                "enum": [
+                  "UNCONFIRMED",
+                  "CONFIRMED",
+                  "REJECTED"
+                ]
+              },
+              "type": {
+                "const": "PLACE_OPENING"
+              },
+              "opening_id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "door",
+                  "window",
+                  "unknown"
+                ]
+              },
+              "room_candidates": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "maxItems": 2
+              },
+              "edge_index": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "offset_mm": {
+                "type": "number",
+                "minimum": 0
+              },
+              "width_mm": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "observation_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "placement_state": {
+                "enum": [
+                  "ANCHORED",
+                  "LIKELY",
+                  "AMBIGUOUS"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decision_id",
+              "type",
+              "room_id",
+              "polygon_mm",
+              "rationale"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "confirmed_by": {
+                "type": "string"
+              },
+              "human_confirmation": {
+                "enum": [
+                  "UNCONFIRMED",
+                  "CONFIRMED",
+                  "REJECTED"
+                ]
+              },
+              "type": {
+                "const": "ADD_HYPOTHETICAL_ROOM"
+              },
+              "room_id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "polygon_mm": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 3
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

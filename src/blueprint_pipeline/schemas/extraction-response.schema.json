@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:extraction-response:1.0.0",
+  "title": "Extraction model response contract",
+  "description": "What the local extraction model must return. Any source_id it echoes is advisory only and is replaced by the authoritative manifest ID.",
+  "type": "object",
+  "required": [
+    "legible",
+    "observations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "source_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Advisory echo; never authoritative."
+    },
+    "legible": {
+      "type": "boolean"
+    },
+    "fragment_class": {
+      "enum": [
+        "WHOLE_FLOOR",
+        "ROOM",
+        "MULTI_ROOM_RELATIONSHIP",
+        "CORRIDOR_OR_TRANSITION",
+        "OPENING_DETAIL",
+        "PARTIAL_WALL_OR_CORNER",
+        "TEXT_OR_NOTES",
+        "UNKNOWN",
+        null
+      ]
+    },
+    "fragment_class_confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observations": {
+      "type": "array",
+      "maxItems": 2000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "raw_text"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "room_label",
+              "dimension",
+              "opening",
+              "wall",
+              "note",
+              "scale",
+              "other"
+            ]
+          },
+          "raw_text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000,
+            "description": "Verbatim transcription; never corrected."
+          },
+          "normalized": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000,
+            "description": "Model's normalized reading, kept separately from raw_text."
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "uncertainty": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000
+          },
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200,
+            "description": "Raw label of the room/feature this observation refers to."
+          },
+          "dimension_axis": {
+            "enum": [
+              "width",
+              "depth",
+              "length",
+              "height",
+              "unknown",
+              null
+            ]
+          },
+          "opening_type": {
+            "enum": [
+              "door",
+              "window",
+              "unknown",
+              null
+            ]
+          },
+          "region_hint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          }
+        }
+      }
+    }
+  }
+}

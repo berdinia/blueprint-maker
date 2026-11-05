@@ -1,0 +1,57 @@
+{
+  "schema": "blueprint.source-register",
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "notes": "Synthetic whole-floor sheet.",
+      "path": "plans/syn-sheet-a.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-001"
+    },
+    {
+      "notes": "Byte-identical copy; filename mentions another source ID.",
+      "path": "plans/copy-of-syn-src-001.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-002"
+    },
+    {
+      "notes": "Photograph-like variant of sheet A.",
+      "path": "photos/syn-photo-a.jpg",
+      "sha256": null,
+      "source_id": "SYN-SRC-003"
+    },
+    {
+      "declared_fragment_class": "ROOM",
+      "notes": "Independent redraw of BRAVO.",
+      "path": "sketches/syn-sketch-bravo.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-004"
+    },
+    {
+      "notes": "Possible revision of CHARLIE.",
+      "path": "sketches/syn-sketch-charlie-rev.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-005"
+    },
+    {
+      "declared_fragment_class": "OPENING_DETAIL",
+      "notes": "Opening detail.",
+      "path": "details/syn-door-detail.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-006"
+    },
+    {
+      "notes": "Model returns empty content for this source.",
+      "path": "notes/syn-notes.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-007"
+    },
+    {
+      "notes": "Registered but absent.",
+      "path": "missing/syn-not-present.png",
+      "sha256": null,
+      "source_id": "SYN-SRC-008"
+    }
+  ],
+  "synthetic": true
+}

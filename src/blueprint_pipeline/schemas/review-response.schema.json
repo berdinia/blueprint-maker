@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:review-response:1.0.0",
+  "title": "Visual review model response contract",
+  "description": "What the local review model must return. It may assess presentation only, never architectural facts.",
+  "type": "object",
+  "required": [
+    "legible",
+    "verdict",
+    "issues"
+  ],
+  "properties": {
+    "legible": {
+      "type": "boolean"
+    },
+    "verdict": {
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "description"
+        ],
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "minor",
+              "major",
+              "blocking"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          }
+        }
+      }
+    }
+  }
+}

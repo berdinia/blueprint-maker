@@ -22,3 +22,14 @@ cache/
 tmp/
 *.db
 *.sqlite
+# Local projects and synthetic run outputs
+work/
+input/
+register/
+!fixtures/synthetic/project/register/
+blueprint.yaml
+synthetic-report.md
+dist/
+build/
+.hypothesis/
+.env

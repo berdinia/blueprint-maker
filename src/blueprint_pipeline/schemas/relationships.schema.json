@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:blueprint:schema:relationships:1.0.0",
+  "title": "Declared source relationships",
+  "description": "Pairwise relationships asserted by a human, a heuristic or a model. Model assertions are advisory.",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "relationships"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "blueprint.relationships"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    }
+  },
+  "$defs": {
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a",
+        "b",
+        "kind",
+        "asserted_by"
+      ],
+      "properties": {
+        "a": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "b": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "kind": {
+          "enum": [
+            "EXACT_FILE_DUPLICATE",
+            "SAME_SCAN_OR_PHOTO_VARIANT",
+            "SAME_DRAWING_RESCANNED",
+            "ANNOTATED_COPY",
+            "REDRAWN_SAME_ROOM",
+            "SUPPLEMENTARY_DETAIL",
+            "POSSIBLE_REVISION",
+            "CONFLICTING_VERSION",
+            "POSSIBLY_SAME_SUBJECT",
+            "UNRELATED",
+            "UNKNOWN"
+          ]
+        },
+        "asserted_by": {
+          "enum": [
+            "HUMAN",
+            "HEURISTIC",
+            "MODEL"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "subject": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

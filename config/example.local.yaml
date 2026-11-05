@@ -1,0 +1,58 @@
+# Example local configuration. Copy to <project>/blueprint.yaml and edit.
+# Every key is validated; unknown keys are rejected. See docs/CONFIGURATION.md.
+schema_version: 1
+
+paths:
+  project_root: .          # relative to this file
+  input_dir: input         # original evidence; the pipeline only reads it
+  work_dir: work           # derived artifacts, logs, locks, stage records
+  results_dir: results     # human-review packet
+
+privacy:
+  mode: loopback           # loopback | private_network
+  allowed_hosts: []        # only with private_network, e.g. [gpu-box.lan]
+
+inference:
+  primary:
+    url: http://127.0.0.1:11434
+    api: ollama            # ollama (/api/chat) | openai (/v1/chat/completions)
+    api_key_env: null      # NAME of an env var holding a key, if the server needs one
+  native: null             # optional second local endpoint, e.g. {url: ..., api: ollama}
+  fallback_to_native: false  # never implicit; only before any request body is sent
+  request_timeout_s: 900
+  connect_timeout_s: 5
+  context_size: 8192
+  max_output_tokens: 4096
+  max_image_px: 2048
+  max_image_bytes: 12000000
+  concurrency: 1           # must be 1: one heavy local-model job at a time
+  stream: true
+  temperature: 0.0
+
+models:
+  extract: null            # your local vision model tag
+  review: null             # a DIFFERENT local model for independent visual review
+
+retry:
+  max_attempts: 2          # retries only connect failures / HTTP 429 / 503
+  backoff_s: 2.0
+
+lock:
+  wait_s: 0                # seconds to wait for a busy heavy-job lock (0 = refuse)
+  poll_s: 1.0
+
+render:
+  page_w_mm: 420           # A3 landscape
+  page_h_mm: 297
+  margin_mm: 10
+  title_h_mm: 24
+  side_w_mm: 110           # notes and schedules column
+  dim_band_mm: 12
+  label_h_mm: 3.5
+  min_label_h_mm: 2.0
+  note_h_mm: 2.6
+  png_dpi: 150
+  coordinate_decimals: 3
+
+review:
+  max_repair_cycles: 2     # 0..2 automated presentation repairs, then a human

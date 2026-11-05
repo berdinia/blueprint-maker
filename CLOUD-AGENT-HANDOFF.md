@@ -1,3 +1,7 @@
+> **Historical document.** This is the handoff that accompanied the sanitized
+> scaffold export (v0.1.0). The work it requested is complete; see
+> `docs/ENGINEERING-ASSESSMENT.md`, `FINAL-VERIFICATION.md` and `KNOWN-ISSUES.md`.
+
 # Cloud Agent Handoff
 
 **You have been given only sanitized scaffolding.** There is no real

@@ -1,82 +1,52 @@
-# Known Issues
+# Known issues
 
-Generic software defects. No private examples are included.
+Generic software limitations. No private examples are included. The defects
+listed in the previous version of this file (K1–K10) are addressed; see
+`docs/ENGINEERING-ASSESSMENT.md` and `CHANGELOG.md`.
 
-## Critical
+## Not verified in this environment
 
-### K1: Proxy probe timeout causes silent cloud fallback
-When the proxy endpoint times out, the extraction runner may silently
-fall back to the native endpoint or, in the original workflow, to a
-remote cloud URL. This must be prevented. The runner should block the
-job cleanly and log the reason, never redirect.
+* **No real local model was exercised.** Every inference path was tested
+  against the loopback fake server (both protocols, streaming and not, all
+  failure modes). Real vision models may need prompt tuning, a larger
+  `request_timeout_s`, or a smaller `max_image_px`.
+* **macOS (Apple Silicon)** was verified only through CI (`macos-latest`,
+  arm64, Python 3.10 and 3.13: all tests and the synthetic run pass), not on a
+  physical machine.
+* **Windows**: the lock falls back to exclusive file creation plus PID checks;
+  untested, and a crash always needs `lock clear --stale`.
 
-**Fix:** Replace silent fallback with an explicit `BLOCKED` result and
-structured error. See `extraction.py: _invoke_model`.
+## Functional limitations
 
-### K2: Stale lock detection is platform-dependent
-The stale-lock detection uses `/proc/<pid>` on Linux but falls back to
-`os.kill(pid, 0)` on macOS. This is incomplete: stale detection may
-fail to reclaim a lock after a process crash.
+* **PDF/HEIC evidence** is not rasterised locally (would need an extra
+  dependency); such sources are `UNSUPPORTED_MEDIA` and blocked. Convert them
+  to PNG with a local tool and register the converted file.
+* **Identity grouping** uses normalized labels only. Abbreviations, synonyms
+  and misspellings are not merged automatically; use `MERGE_CANDIDATES`.
+* **Photo-variant detection** (dHash ≤ 6/64) was tuned on synthetic images.
+  Strong perspective or cropping defeats it (false negative: the photo counts
+  as its own origin); a near-identical revision could match (mitigated: human
+  relationships override heuristics, and same-origin measurement disagreement
+  is reported as a conflict). Review `classify` findings.
+* **Walls are centre lines**; thickness is not modelled (`thickness_mm: null`).
+* **Opening placement** on a single room edge must fit inside one wall
+  segment; an opening spanning a split point is reported as not applied.
+* **Dimension/aspect agreement** is checked for four-vertex rooms only.
+* **Labels** have no leader lines. A label that cannot fit inside its room is
+  omitted from the plan (WARN) and listed in the schedule.
+* **Side column** truncates with “… N more lines” when there are many unplaced
+  items or conflicts; the full lists are in the packet's `attention.json`.
+* **Text metrics** assume a monospace font (0.6 em). PNG text uses the first
+  monospace font found (DejaVu Sans Mono, Menlo, Consolas, Courier New, …);
+  with none installed, Pillow's default font is used and widths may differ.
+* **PNG bytes** depend on the installed font and Pillow/FreeType versions; PNG
+  output is bound to its SVG by hash rather than byte-identical across
+  machines. SVG, PDF and DXF are byte-deterministic for a given library set.
+* **Single page, single floor**: no multi-sheet or multi-level layouts yet.
 
-**Fix:** Use a `fcntl.flock` or `portalocker` for cross-platform
-advisory locking.
+## Process notes
 
-### K3: DXF text collision detection is too coarse
-The current text collision detection uses Euclidean distance. It does
-not account for text extent (font size, anchor, alignment).
-
-**Fix:** Use `ezdxf` text bounds to compute actual collision.
-
-## High
-
-### K4: No room overlap detection
-Overlapping room rectangles are not detected. Two rooms may share the
-same space without warning.
-
-**Fix:** Add an `AABB` overlap check between all room rectangles.
-
-### K5: Openings without positions are not placed
-This is by design, but the current logic is fragile. There is no clear
-separation between "recorded but not placed" and "placed".
-
-**Fix:** Introduce a `placement` enum: `NOT_KNOWN`, `ESTIMATED`,
-`PLACED`, `REVIEWED`.
-
-### K6: No property-based tests for rendering transform
-The renderer's bounding-box transform is not tested with a property-based
-approach (e.g., `hypothesis` or `pytest-quickcheck`).
-
-**Fix:** Add a `tests/test_renderer_properties.py` that generates
-random room layouts and verifies invariant: geometry is always inside
-the drawable area.
-
-## Medium
-
-### K7: Source registry is not versioned
-The registry format is unversioned. Future schema changes may break
-backward compatibility.
-
-**Fix:** Add a `$schema` field and a `$version` field to the registry
-and all extracted data.
-
-### K8: No async extraction
-Extraction is synchronous. For multiple sources, a thread or async
-runner would improve throughput.
-
-**Fix:** Add `ExtractionRunner` async support using `asyncio` or
-`concurrent.futures.ThreadPoolExecutor`.
-
-## Low
-
-### K9: Documentation may carry stale references
-Some docstrings or examples may reference obsolete path or project names.
-
-**Fix:** Define a private sensitive-term list (not shipped in the export) and
-grep the export for each term to identify and replace any stale references.
-Do not hard-code real project or source names in shipped example commands.
-
-### K10: No Dockerfile or CI
-The pipeline has no container image or CI pipeline.
-
-**Fix:** Add a `Dockerfile` and a GitHub Actions workflow for local
-testing.
+* `blueprint resume` re-runs everything downstream of a changed input; with a
+  slow local model, prefer `blueprint extract --source ID` for targeted work.
+* The network audit is allowlist-based on module paths; review changes to
+  `inference/client.py` by hand.
