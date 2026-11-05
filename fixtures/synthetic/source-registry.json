@@ -1,0 +1,61 @@
+{
+  "sources": [
+    {
+      "source_id": "SYN-001",
+      "fragment_type": "full_plan",
+      "source_family": "SYN-FAM-A",
+      "status": "extracted",
+      "extracted_at": "2026-01-01T00:00:00Z",
+      "notes": "Synthetic full-plan source. Not a real building source.",
+      "provenance": "SYNTHETIC TEST DATA — NOT DERIVED FROM A REAL BUILDING"
+    },
+    {
+      "source_id": "SYN-001-copy",
+      "fragment_type": "annotated_copy",
+      "source_family": "SYN-FAM-A",
+      "is_copy": true,
+      "copy_of": "SYN-001",
+      "status": "extracted",
+      "extracted_at": "2026-01-01T00:05:00Z",
+      "notes": "Synthetic annotated copy. Relationship is synthetic.",
+      "provenance": "SYNTHETIC TEST DATA — NOT DERIVED FROM A REAL BUILDING"
+    },
+    {
+      "source_id": "SYN-002",
+      "fragment_type": "duplicate",
+      "source_family": "SYN-FAM-B",
+      "status": "extracted",
+      "extracted_at": "2026-01-01T00:10:00Z",
+      "notes": "Synthetic duplicate. Grouped with SYN-003.",
+      "provenance": "SYNTHETIC TEST DATA — NOT DERIVED FROM A REAL BUILDING"
+    },
+    {
+      "source_id": "SYN-003",
+      "fragment_type": "duplicate",
+      "source_family": "SYN-FAM-B",
+      "status": "unresolved",
+      "extracted_at": null,
+      "notes": "Synthetic unresolved source. Used to test BLOCKED path.",
+      "provenance": "SYNTHETIC TEST DATA — NOT DERIVED FROM A REAL BUILDING"
+    }
+  ],
+  "families": [
+    {
+      "family_id": "SYN-FAM-A",
+      "description": "Annotated copy relationship (synthetic)",
+      "members": ["SYN-001", "SYN-001-copy"],
+      "copy_of": "SYN-001-copy",
+      "is_annotated_copy": true,
+      "copy_annotated": [
+        {"ref": "SYN-001", "annotated_by": "SYN-001-copy", "annotation": "Synthetic annotation"}
+      ]
+    },
+    {
+      "family_id": "SYN-FAM-B",
+      "description": "Duplicate group (synthetic)",
+      "members": ["SYN-002", "SYN-003"],
+      "copy_of": "duplicate",
+      "is_annotated_copy": false
+    }
+  ]
+}

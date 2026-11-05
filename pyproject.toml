@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blueprint-reconstruction-scaffold"
+version = "0.1.0"
+description = "Cloud-safe scaffolding for a local-first floor-plan reconstruction pipeline. No real building data included."
+requires-python = ">=3.10"
+license = {text = "Proprietary — sanitized for cloud engineering use"}
+dependencies = [
+    "ezdxf>=1.3",
+    "Pillow>=9.0",
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff", "mypy"]
+
+[tool.setuptools.packages.find]
+include = ["pipeline"]
+exclude = ["fixtures", "tests", "scripts"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

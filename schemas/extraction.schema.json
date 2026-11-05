@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.org/schemas/vision-extraction.schema.json",
+  "title": "Vision Extraction Output Schema",
+  "description": "Schema for a single vision-model extraction result. The caller or source registry supplies the authoritative source_id; the model's self-reported source_id is only advisory and is overwritten by the pipeline.",
+  "type": "object",
+  "required": [
+    "extraction_id",
+    "extraction_timestamp",
+    "model",
+    "transport",
+    "json_parse",
+    "source_id",
+    "status",
+    "content"
+  ],
+  "properties": {
+    "extraction_id":   {"type": "string"},
+    "extraction_timestamp": {"type": "string", "format": "date-time"},
+    "model":           {"type": "string", "description": "The local model name used."},
+    "transport":       {"enum": ["PASS", "FAIL", "BLOCKED", "TIMEOUT"]},
+    "json_parse":      {"enum": ["PASS", "FAIL", "BLOCKED", "PARTIAL"]},
+    "source_id":       {
+      "type": "string",
+      "description": "Authoritative source_id. Supplied by the caller or source registry, NOT by the model. If the model's self-reported source_id disagrees, the mismatch is recorded in source_id_advisory."
+    },
+    "source_id_advisory": {
+      "type": ["string", "null"],
+      "description": "The source_id the model self-reports, before the authoritative override. Null when the model output did not self-report a source_id. Used only for audit, never for identity."
+    },
+    "source_id_mismatch": {
+      "type": "boolean",
+      "description": "True when the authoritative source_id differs from the advisory source_id."
+    },
+    "status":          {"enum": ["PARTIAL_RESULT", "FAILED", "ERROR", "BLOCKED", "PASS", "INVALID"]},
+    "content": {
+      "type": "object",
+      "description": "The structured extraction payload. Schema of this object is pipeline-specific and versioned independently."
+    }
+  },
+  "additionalProperties": false
+}

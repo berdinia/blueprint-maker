@@ -1,0 +1,24 @@
+# Python / caches / runtime artifacts — never commit, never ship
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.lock
+*.bak
+*.tmp
+*.swp
+.DS_Store
+# Generated runtime outputs (do not ship; the pipeline recreates them locally)
+output/
+results/
+rendered/
+logs/
+sessions/
+cache/
+tmp/
+*.db
+*.sqlite

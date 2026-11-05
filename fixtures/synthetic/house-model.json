@@ -1,0 +1,145 @@
+{
+  "fixture_name": "SYN-TRAINING-001",
+  "purpose": "Synthetic end-to-end test fixture. All data is invented for pipeline testing. NOT DERIVED FROM A REAL BUILDING.",
+  "coordinate_system": {
+    "status": "provisional",
+    "schematic": true,
+    "note": "Provisional schematic. No topology is implied. Coordinates are arbitrary."
+  },
+  "rooms": [
+    {
+      "room_id": "SYN-ROOM-A",
+      "name": "Room A",
+      "x_min_mm": 0,
+      "x_max_mm": 3000,
+      "y_min_mm": 0,
+      "y_max_mm": 2500,
+      "linear_dims_mm": {"width_mm": 3000, "depth_mm": 2500},
+      "corroborated_area_m2": 7.5,
+      "status": "resolved"
+    },
+    {
+      "room_id": "SYN-ROOM-B",
+      "name": "Room B",
+      "x_min_mm": 3000,
+      "x_max_mm": 5500,
+      "y_min_mm": 0,
+      "y_max_mm": 4000,
+      "linear_dims_mm": {"width_mm": 2500, "depth_mm": 4000},
+      "corroborated_area_m2": 10.0,
+      "status": "resolved"
+    },
+    {
+      "room_id": "SYN-ROOM-C",
+      "name": null,
+      "x_min_mm": 0,
+      "x_max_mm": 3000,
+      "y_min_mm": 2500,
+      "y_max_mm": 5000,
+      "linear_dims_mm": {"width_mm": 3000, "depth_mm": 2500},
+      "corroborated_area_m2": 7.5,
+      "status": "partial",
+      "name_conflicts": [
+        {"name": "Room C", "sources": ["syn-src-001"]},
+        {"name": "Room D", "sources": ["syn-src-002"]}
+      ],
+      "unresolved_conflicts": [
+        {"type": "name_conflict", "message": "Name conflict: Room C vs Room D"}
+      ]
+    }
+  ],
+  "openings": {
+    "windows": [
+      {
+        "ref": "SYN-OPEN-A",
+        "measured_width_mm": 1200,
+        "measured_height_mm": 900,
+        "position_on_wall": "not_known"
+      }
+    ],
+    "doors": [
+      {
+        "ref": "SYN-DOOR-A",
+        "measured_width_mm": 800,
+        "measured_height_mm": 2000,
+        "position_on_wall": "not_known"
+      }
+    ],
+    "openings_not_placed": true
+  },
+  "source_families": {
+    "SYN-FAM-A": {
+      "family_id": "SYN-FAM-A",
+      "description": "Synthetic source family — annotated copy relationship",
+      "members": ["SYN-001", "SYN-001-copy"],
+      "copy_of": "SYN-001-copy",
+      "is_annotated_copy": true,
+      "copy_annotated": [
+        {"ref": "SYN-001", "annotated_by": "SYN-001-copy", "annotation": "Synthetic test annotation — not real"}
+      ]
+    },
+    "SYN-FAM-B": {
+      "family_id": "SYN-FAM-B",
+      "description": "Synthetic duplicate group",
+      "members": ["SYN-002", "SYN-003"],
+      "copy_of": "duplicate",
+      "is_annotated_copy": false
+    }
+  },
+  "source_inventory": {
+    "SYN-001": {
+      "source_id": "SYN-001",
+      "fragment_type": "full_plan",
+      "source_family": "SYN-FAM-A",
+      "status": "extracted",
+      "notes": "Synthetic full-plan source"
+    },
+    "SYN-001-copy": {
+      "source_id": "SYN-001-copy",
+      "fragment_type": "annotated_copy",
+      "source_family": "SYN-FAM-A",
+      "is_copy": true,
+      "copy_of": "SYN-001",
+      "status": "extracted",
+      "notes": "Synthetic annotated copy of SYN-001"
+    },
+    "SYN-002": {
+      "source_id": "SYN-002",
+      "fragment_type": "duplicate",
+      "source_family": "SYN-FAM-B",
+      "status": "extracted",
+      "notes": "Synthetic duplicate source"
+    },
+    "SYN-003": {
+      "source_id": "SYN-003",
+      "fragment_type": "duplicate",
+      "source_family": "SYN-FAM-B",
+      "status": "unresolved",
+      "notes": "Synthetic unresolved source"
+    }
+  },
+  "extraction_payloads": {
+    "SYN-001": {
+      "document_type": "floor_plan",
+      "status": "PARTIAL_RESULT",
+      "confidence": 0.82,
+      "content": {
+        "rooms": [
+          {"room_id": "SYN-ROOM-A", "name": "Room A", "area_m2": 7.5},
+          {"room_id": "SYN-ROOM-B", "name": "Room B", "area_m2": 10.0},
+          {"room_id": "SYN-ROOM-C-CONFLICT", "name_conflicts": [
+            {"name": "Room C", "sources": ["SYN-001"], "confidence": 0.7},
+            {"name": "Room D", "sources": ["SYN-002"], "confidence": 0.65}
+          ]}
+        ],
+        "windows": [
+          {"ref": "SYN-OPEN-A", "width_mm": 1200, "height_mm": 900,
+           "position_on_wall": "not_known"}
+        ],
+        "doors": [
+          {"ref": "SYN-DOOR-A", "width_mm": 800, "position_on_wall": "not_known"}
+        ]
+      }
+    }
+  }
+}
